@@ -1,0 +1,54 @@
+<head>
+    <title>MakeItRain Corp</title>
+</head>
+
+<body>
+    <h1>Rock, Paper, Scissors Posse</h1>
+    {{> userCount}}
+    {{> loginButtons}}
+    {{#if currentUser}}
+        {{> rps}}
+    {{/if}}
+</body>
+
+<template name="matches">
+    {{#each matches}}
+        matchName
+    {{/each}}
+</template>
+
+<template name="rps">
+    {{#if userInMatch}}
+        {{#each matches}}
+            <div>
+                <h3>{{playerOne}} vs. {{playerTwo}}</h3>
+                <div>
+                    <button id="rock" class="rps" value="rock">Rock</button>
+                    <button id="paper" class="rps" value="paper">Paper</button>
+                    <button id="scissors" class="rps" value="scissors">Scissors</button>
+                    {{#if userSeletion}}
+                        <p>You selected {{userSelection}}.</p>
+                    {{else}}
+                        <p>Select your move!</p>
+                    {{/if}}
+                </div>
+            </div>
+        {{/each}}
+    {{else}}
+        <div>
+            <p>Waiting for an available user.</p>
+        </div>
+    {{/if}}
+</template>
+
+<template name="userCount">
+    <div>
+        <h2>{{usersOnlineCount}} human beings online</h2>
+        <h2>Challenge someone!</h2>
+        {{#each usersOnline}}
+            <div>
+                <button class="user" value="{{username}}">{{username}}</button>
+            </div>
+        {{/each}}
+    </div>
+</template>

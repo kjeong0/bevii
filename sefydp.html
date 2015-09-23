@@ -22,21 +22,25 @@
         {{#each matches}}
             <div>
                 <h3>{{playerOne}} vs. {{playerTwo}}</h3>
-                <div>
-                    <button id="rock" class="rps" value="rock">Rock</button>
-                    <button id="paper" class="rps" value="paper">Paper</button>
-                    <button id="scissors" class="rps" value="scissors">Scissors</button>
-                    {{#if userSeletion}}
-                        <p>You selected {{userSelection}}.</p>
-                    {{else}}
+                {{#if makeMove}}
+                    <div>
+                        <button id="rock" class="rps" value="rock">Rock</button>
+                        <button id="paper" class="rps" value="paper">Paper</button>
+                        <button id="scissors" class="rps" value="scissors">Scissors</button>
                         <p>Select your move!</p>
+                    </div>
+                {{else}}
+                    {{#if waitingForOtherPlayer}}
+                    <div>Waiting for other player</div>
+                    {{else}}
+                    <div>Winner is {{winner}}</div>
                     {{/if}}
-                </div>
+                {{/if}}
             </div>
         {{/each}}
     {{else}}
         <div>
-            <p>Waiting for an available user.</p>
+            <p>Challenge someone above!</p>
         </div>
     {{/if}}
 </template>

@@ -41,3 +41,14 @@ body {
 #login_form button {
 	margin-top: 20px;
 }
+
+.log_in {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+	font-size: 12pt;
+}
+.log_in:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}

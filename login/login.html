@@ -5,8 +5,10 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="login.css">
   <link rel="stylesheet" href="../ext/bootstrap.min.css">
+  <script src="login.js"></script>
 </head>
 <body>
+  <div class="header"></div>
   <div class="background"></div>
   <form id="login_form">
     <img class="center" src="">
@@ -16,7 +18,8 @@
       <input type="password" class="form-control" placeholder="Password" required/>
       <input type="text" class="form-control" placeholder="Username" required/>
     </div>
-    <button id="login-button" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+    <button id="register_button" class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+    <div class="log_in" onclick="switch_form()">Already a member?</div>
   </form>
 </body>
 </html>

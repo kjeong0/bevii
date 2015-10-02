@@ -21,8 +21,8 @@
     {{#if userInMatch}}
         {{#each matches}}
             <div>
-                <h3>{{playerOne}} vs. {{playerTwo}}</h3>
                 {{#if makeMove}}
+                    <h3>{{playerOne}} vs. {{playerTwo}}</h3>
                     <div>
                         <button id="rock" class="rps" value="rock">Rock</button>
                         <button id="paper" class="rps" value="paper">Paper</button>
@@ -31,9 +31,8 @@
                     </div>
                 {{else}}
                     {{#if waitingForOtherPlayer}}
-                    <div>Waiting for other player</div>
-                    {{else}}
-                    <div>Winner is {{winner}}</div>
+                        <h3>{{playerOne}} vs. {{playerTwo}}</h3>
+                        <div>Waiting for other player</div>
                     {{/if}}
                 {{/if}}
             </div>
@@ -43,6 +42,32 @@
             <p>Challenge someone above!</p>
         </div>
     {{/if}}
+
+    <h2>Match History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                    <th>Winner</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each matches}}
+                    {{#unless makeMove}}
+                        {{#unless waitingForOtherPlayer}}
+                            <tr>
+                                <td>{{date}}</td>
+                                <td>{{playerOne}}</td>
+                                <td>{{playerTwo}}</td>
+                                <td>{{winner}}</td>
+                            </tr>
+                        {{/unless}}
+                    {{/unless}}
+                {{/each}}
+            </tbody>
+        </table>
 </template>
 
 <template name="userCount">

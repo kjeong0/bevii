@@ -26,7 +26,7 @@ if (Meteor.isClient) {
                     {playerOne: Meteor.user().username},
                     {playerTwo: Meteor.user().username}
                 ]
-            });
+            }, {sort: {date: -1}});
         },
         waitingForOtherPlayer: function() {
             /* Returns true if opponent still has to make a move */
@@ -90,7 +90,8 @@ if (Meteor.isClient) {
 
             Matches.insert({
                 playerOne: thisPlayer,
-                playerTwo: otherPlayer
+                playerTwo: otherPlayer,
+                date: new Date()
             });
 
         }

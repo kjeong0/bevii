@@ -1,0 +1,60 @@
+.countdown {
+  	-webkit-transform: translateY(-50%);
+  	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+
+	font-size: 20pt;
+	width: 100%;
+	position: absolute;
+	text-align: center;
+	vertical-align: center;
+	top: 50%;
+	color: white;
+}
+	.countdown #time {
+		font-size: 50pt;
+	}
+
+.mainscreen {
+	width: 100%;
+	height: 700pt;
+	opacity: 0;
+	text-align: center;
+	font-size: 50pt;
+	position: fixed;
+}
+
+	.game_container {
+		right: 0;
+		height: 100%;
+		width: 50%;
+		background-color: white;
+		position: absolute;
+	}
+
+	.stat_container {
+		left: 0;
+		width: 50%;
+		height: 70%;
+		background-color: lightyellow;
+		position: absolute;
+	}
+
+	.chat_container {
+		left: 0;
+		width: 50%;
+		top: 70%;
+		height: 30%;
+		background-color: lightgreen;
+		position: absolute;
+	}
+
+.background {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	/* shit shit shit shit shit shit fix this dumb shit into a god damn gradient */
+	background-image: url('../assets/parallax.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+}

@@ -43,14 +43,14 @@
         </div>
     {{/if}}
 
-    <h2>Match History</h2>
-        <table>
+    <div>
+        <h2>Match History</h2>
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Player 1</th>
-                    <th>Player 2</th>
-                    <th>Winner</th>
+                    <th>Opponent</th>
+                    <th>Outcome</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,16 +58,16 @@
                     {{#unless makeMove}}
                         {{#unless waitingForOtherPlayer}}
                             <tr>
-                                <td>{{date}}</td>
-                                <td>{{playerOne}}</td>
-                                <td>{{playerTwo}}</td>
-                                <td>{{winner}}</td>
+                                <td>{{matchDate}}</td>
+                                <td>{{matchOpponent}}</td>
+                                <td>{{matchOutcome}}</td>
                             </tr>
                         {{/unless}}
                     {{/unless}}
                 {{/each}}
             </tbody>
         </table>
+    </div>
 </template>
 
 <template name="userCount">

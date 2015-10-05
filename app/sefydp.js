@@ -37,6 +37,18 @@ if (Meteor.isClient) {
         makeMove: function() {
             /* Return true if the player still has to make a move */
             return this[Meteor.user().username] === undefined;
+        },
+        matchDate: function() {
+            return moment(this.date).fromNow();
+        },
+        matchOpponent: function() {
+            return Meteor.user().username === this.playerOne ? this.playerTwo : this.playerOne;
+        },
+        matchOutcome: function() {
+            if (this.winner.toUpperCase() === "TIE") {
+                return "Tie";
+            }
+            return Meteor.user().username === this.winner ? "Won" : "Lost";
         }
     });
 

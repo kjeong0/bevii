@@ -3,6 +3,9 @@
 </head>
 
 <body>
+
+
+
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -36,11 +39,10 @@
                 {{#if makeMove}}
                     <h3>{{playerOne}} vs. {{playerTwo}}</h3>
                     <div>
-                        <p>Make your move!</p>
-                        <button id="rock" class="btn btn-default rps" value="rock"><img src="/images/Rock-50.png"></button>
-                        <button id="paper" class="btn btn-default rps" value="paper"><img src="/images/Paper-50.png"></button>
-                        <button id="scissors" class="btn btn-default rps" value="scissors"><img src="/images/Scissors-50.png"></button>
-                        
+                        <button id="rock" class="btn btn-default rps" value="rock"><img src="/images/Rock-50.png" /></button>
+                        <button id="paper" class="btn btn-default rps" value="paper"><img src="/images/Paper-50.png" /></button>
+                        <button id="scissors" class="btn btn-default rps" value="scissors"><img src="/images/Scissors-50.png" /></button>
+                        <p>Select your move!</p>
                     </div>
                 {{else}}
                     {{#if waitingForOtherPlayer}}

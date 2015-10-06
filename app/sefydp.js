@@ -56,8 +56,8 @@ if (Meteor.isClient) {
         'click .rps': function(event) {
             // Add a key indicating the user's choice and checks for winner if possible
             var updateQuery = {$set: {}};
-            var choice = event.target.value;
-            updateQuery.$set[Meteor.user().username + ".choice"] = event.target.value;
+            var choice = event.currentTarget.value;
+            updateQuery.$set[Meteor.user().username + ".choice"] = event.currentTarget.value;
             Matches.update(this._id, updateQuery);
 
             var otherPlayer = Meteor.user().username === this.playerOne ? this.playerTwo : this.playerOne;

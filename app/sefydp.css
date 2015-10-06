@@ -1,1 +1,9 @@
 /* CSS declarations go here */
+.loginbuttons {
+	padding-top: 15px;
+	text-decoration: none;
+}
+
+body {
+    padding-top: 70px;
+}

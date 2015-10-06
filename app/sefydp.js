@@ -109,6 +109,12 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.userCountMini.helpers({
+        usersOnlineCount: () => {
+            return Meteor.users.find({ "status.online": true}).count();
+        }
+    });
+
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY"
     });

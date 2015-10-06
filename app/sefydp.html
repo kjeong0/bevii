@@ -1,14 +1,26 @@
 <head>
-    <title>MakeItRain Corp</title>
+    <title>Bevii</title>
 </head>
 
 <body>
-    <h1>Rock, Paper, Scissors Posse</h1>
-    {{> userCount}}
-    {{> loginButtons}}
-    {{#if currentUser}}
-        {{> rps}}
-    {{/if}}
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Bevii&nbsp;&nbsp;&nbsp;<small>{{> userCountMini}}</small></a>
+        </div>
+          <ul class="nav navbar-nav navbar-left loginbuttons">
+            {{> loginButtons}}
+          </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+        {{> userCount}}
+        {{#if currentUser}}
+            {{> rps}}
+        {{/if}}
+    </div>
 </body>
 
 <template name="matches">
@@ -72,7 +84,7 @@
 
 <template name="userCount">
     <div>
-        <h2>{{usersOnlineCount}} human beings online</h2>
+        <h2>{{usersOnlineCount}} player(s) online</h2>
         <h2>Challenge someone!</h2>
         {{#each usersOnline}}
             <div>
@@ -80,4 +92,8 @@
             </div>
         {{/each}}
     </div>
+</template>
+
+<template name="userCountMini">
+    {{usersOnlineCount}} player(s) online
 </template>

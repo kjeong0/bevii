@@ -1,10 +1,18 @@
 Matches = new Mongo.Collection("matches");
+Leaders = new Mongo.Collection("leaders");
 
 if (Meteor.isClient) {
     Meteor.subscribe("userStatus");
     Meteor.subscribe("matches");
+    Meteor.subscribe("leaders");
 
     Session.setDefault('userSelection', null);
+
+    Template.followers.helpers({
+        leaders: () => {
+            return Leaders.find();
+        }
+    })
 
     Template.rps.helpers({
         userSelection: () => {
@@ -52,6 +60,14 @@ if (Meteor.isClient) {
         }
     });
 
+    function updateLeaders (winnerName, loserName) {
+        var loser = Leaders.find({leader: loserName});
+        Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
+        Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
+        Leaders.remove({leader: loserName});
+        console.log('test');
+    }
+
     Template.rps.events({
         'click .rps': function(event) {
             // Add a key indicating the user's choice and checks for winner if possible
@@ -70,10 +86,12 @@ if (Meteor.isClient) {
                         (playerOneChoice === "scissors" && playerTwoChoice ==="paper") ||
                         (playerOneChoice === "paper" && playerTwoChoice ==="rock")) {
                         Matches.update(this._id, {$set: {winner: playerOneName}});
+                        updateLeaders(playerOneName, playerTwoName);
                     } else if ((playerTwoChoice === "rock" && playerOneChoice ==="scissors") ||
                                (playerTwoChoice === "scissors" && playerOneChoice ==="paper") ||
                                (playerTwoChoice === "paper" && playerOneChoice ==="rock")) {
                         Matches.update(this._id, {$set: {winner: playerTwoName}});
+                        updateLeaders(playerTwoName, playerOneName);
                     } else {
                         Matches.update(this._id, {$set: {winner: "tie"}});
                     }
@@ -100,6 +118,16 @@ if (Meteor.isClient) {
             var thisPlayer = Meteor.user().username;
             var otherPlayer = event.target.value;
 
+            var leaders = Leaders.find({
+                $or: [
+                    {leader: thisPlayer},
+                    {followers: { $elemMatch: {thisPlayer}}}
+                ]
+            });
+            if (!leaders){
+                Leaders.insert({leader: thisPlayer, follower: []});
+            }
+
             Matches.insert({
                 playerOne: thisPlayer,
                 playerTwo: otherPlayer,
@@ -124,6 +152,9 @@ if (Meteor.isServer) {
     Meteor.startup(function () {
         Meteor.publish("userStatus", () => {
             return Meteor.users.find({"status.online": true});
+        });
+        Meteor.publish("leaders", () => {
+            return Leaders.find();
         });
         Meteor.publish("matches", () => {
             return Matches.find();

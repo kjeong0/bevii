@@ -20,6 +20,7 @@
         {{#if currentUser}}
             {{> rps}}
         {{/if}}
+        {{> followers}}
     </div>
 </body>
 
@@ -72,7 +73,7 @@
                             <tr>
                                 <td>{{matchDate}}</td>
                                 <td>{{matchOpponent}}</td>
-                                <td>{{matchOutcome}}</td>
+                                <!--td>{{matchOutcome}}</td-->
                             </tr>
                         {{/unless}}
                     {{/unless}}
@@ -80,6 +81,15 @@
             </tbody>
         </table>
     </div>
+</template>
+
+<template name="followers">
+    <h2>Followers</h2>
+    {{#each leaders}}
+        <div>
+            Leader: {{leader}} | Followers: {{followers}}
+        </div>
+    {{/each}} 
 </template>
 
 <template name="userCount">

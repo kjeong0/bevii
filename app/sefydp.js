@@ -65,7 +65,6 @@ if (Meteor.isClient) {
         Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
         Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
         Leaders.remove({leader: loserName});
-        console.log('test');
     }
 
     Template.rps.events({
@@ -159,5 +158,8 @@ if (Meteor.isServer) {
         Meteor.publish("matches", () => {
             return Matches.find();
         });
+    });
+    Meteor.methods({
+
     });
 }

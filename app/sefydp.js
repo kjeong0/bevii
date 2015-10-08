@@ -186,32 +186,7 @@ if (Meteor.isServer) {
 
     // Every __ seconds check if there is a winner and
     // we check if there are people without games and then we match them
-    var timer = Meteor.setInterval(function() {
-        // check if there is a winner
-        // leader
-        if (Leaders.find().fetch().length == 1) {
-            // there is a winner
-            // print out winner
 
-            // stop interval
-            clearInterval(timer);
-            return;
-        }
-
-        // Matchmaking
-        var leaders = Leaders.find();
-        var availablePlayers = [];
-        leaders.forEach(function(leader) {
-            var leaderName = leader.leader;
-            if(!isPlayerInMatch(leaderName)) {
-                availablePlayers.push(leaderName);
-            }
-            if (availablePlayers.length >= 2) {
-                makeMatch(availablePlayers[0], availablePlayers[1]);
-                availablePlayers = [];
-            }
-        });
-    }, 1000);
 
 
 
@@ -256,6 +231,32 @@ if (Meteor.isServer) {
                 var leaderName = user.username;
                 Leaders.insert({leader: leaderName, followers: []});
             });
+            var timer = Meteor.setInterval(function() {
+                // check if there is a winner
+                // leader
+                if (Leaders.find().fetch().length == 1) {
+                    // there is a winner
+                    // print out winner
+
+                    // stop interval
+                    clearInterval(timer);
+                    return;
+                }
+
+                // Matchmaking
+                var leaders = Leaders.find();
+                var availablePlayers = [];
+                leaders.forEach(function(leader) {
+                    var leaderName = leader.leader;
+                    if(!isPlayerInMatch(leaderName)) {
+                        availablePlayers.push(leaderName);
+                    }
+                    if (availablePlayers.length >= 2) {
+                        makeMatch(availablePlayers[0], availablePlayers[1]);
+                        availablePlayers = [];
+                    }
+                });
+            }, 1000);
         },
         killServer: function () {
             Leaders.remove({});

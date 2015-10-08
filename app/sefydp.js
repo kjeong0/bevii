@@ -60,13 +60,6 @@ if (Meteor.isClient) {
         }
     });
 
-    function updateLeaders (winnerName, loserName) {
-        var loser = Leaders.find({leader: loserName});
-        Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
-        Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
-        Leaders.remove({leader: loserName});
-    }
-
     Template.rps.events({
         'click .rps': function(event) {
             // Add a key indicating the user's choice and checks for winner if possible
@@ -85,12 +78,12 @@ if (Meteor.isClient) {
                         (playerOneChoice === "scissors" && playerTwoChoice ==="paper") ||
                         (playerOneChoice === "paper" && playerTwoChoice ==="rock")) {
                         Matches.update(this._id, {$set: {winner: playerOneName}});
-                        updateLeaders(playerOneName, playerTwoName);
+                        Meteor.call('updateLeaders', playerOneName, playerTwoName);
                     } else if ((playerTwoChoice === "rock" && playerOneChoice ==="scissors") ||
                                (playerTwoChoice === "scissors" && playerOneChoice ==="paper") ||
                                (playerTwoChoice === "paper" && playerOneChoice ==="rock")) {
                         Matches.update(this._id, {$set: {winner: playerTwoName}});
-                        updateLeaders(playerTwoName, playerOneName);
+                        Meteor.call('updateLeaders', playerTwoName, playerOneName);
                     } else {
                         Matches.update(this._id, {$set: {winner: "tie"}});
                     }
@@ -117,14 +110,14 @@ if (Meteor.isClient) {
             var thisPlayer = Meteor.user().username;
             var otherPlayer = event.target.value;
 
-            var leaders = Leaders.find({
+            var leaders = Leaders.findOne({
                 $or: [
                     {leader: thisPlayer},
                     {followers: { $elemMatch: {thisPlayer}}}
                 ]
             });
             if (!leaders){
-                Leaders.insert({leader: thisPlayer, follower: []});
+                Leaders.insert({leader: thisPlayer, followers: []});
             }
 
             Matches.insert({
@@ -160,6 +153,12 @@ if (Meteor.isServer) {
         });
     });
     Meteor.methods({
+        updateLeaders: function (winnerName, loserName) {
+            var loser = Leaders.findOne({leader: loserName});
+            Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
+            Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
 
+            Leaders.remove({leader: loserName});
+        }
     });
 }

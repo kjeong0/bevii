@@ -90,7 +90,10 @@
     <h2>Followers</h2>
     {{#each leaders}}
         <div>
-            Leader: {{leader}} | Followers: {{followers}}
+            Leader: {{leader}} | Followers: 
+            {{#each followers}}
+                {{this}}, 
+            {{/each}}
         </div>
     {{/each}} 
 </template>

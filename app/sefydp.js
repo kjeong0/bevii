@@ -12,7 +12,7 @@ if (Meteor.isClient) {
         leaders: () => {
             return Leaders.find();
         }
-    })
+    });
 
     Template.admin.helpers({
         isAdmin: () => {
@@ -168,18 +168,25 @@ if (Meteor.isServer) {
 
     var isPlayerInMatch = player => {
         return Matches.find({
-            $or: [
-                {playerOne: player},
-                {playerTwo: player}
+            $and: [
+                {
+                    $or: [
+                        {playerOne: player},
+                        {playerTwo: player}
+                    ]
+                },
+                {
+                    winner: {$exist: false}
+                }
             ]
         }).count() > 0;
     };
 
-    // Every __ seconds check if there is a winner and 
+    // Every __ seconds check if there is a winner and
     // we check if there are people without games and then we match them
-    var timer = Meteor.setInterval(function() { 
+    var timer = Meteor.setInterval(function() {
         // check if there is a winner
-        // leader 
+        // leader
         if (Leaders.find().fetch().length == 1) {
             // there is a winner
             // print out winner

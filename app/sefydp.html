@@ -113,3 +113,10 @@
 <template name="userCountMini">
     {{usersOnlineCount}} player(s) online
 </template>
+
+
+<template name="adminStartRound">
+    {{#if admin}}
+        <button class="btn btn-default user" id="start">Start Game</button>
+    {{/if}}
+</template>

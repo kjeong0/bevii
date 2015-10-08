@@ -127,6 +127,56 @@ if (Meteor.isServer) {
         });
     });
 
+    var makeMatch = (playerOneName, playerTwoName) => {
+        Matches.insert({
+            playerOne: playerOneName,
+            playerTwo: playerTwoName,
+            date: new Date()
+        });
+    };
+
+    var isPlayerInMatch = player => {
+        return Matches.find({
+            $or: [
+                {playerOne: player},
+                {playerTwo: player}
+            ]
+        }).count() > 0;
+    };
+
+    // Every __ seconds check if there is a winner and 
+    // we check if there are people without games and then we match them
+    var timer = Meteor.setInterval(function() { 
+        // check if there is a winner
+        // leader 
+        if (Leaders.find().fetch().length == 1) {
+            // there is a winner
+            // print out winner
+
+            // stop interval
+            clearInterval(timer);
+            return;
+        }
+
+        // Matchmaking
+        console.log('matchmaking?');
+        var leaders = Leaders.find();
+        console.log(leaders.fetch());
+        var availablePlayers = [];
+        leaders.forEach(function(leader) {
+            var leaderName = leader.leader;
+            if(isPlayerInMatch(leaderName)) {
+                availablePlayers.append(leaderName);
+            }
+            if (availablePlayers.length >= 2) {
+                makeMatch(availablePlayers[0], availablePlayers[1]);
+                availablePlayers = [];
+            }
+        });
+    }, 1000);
+
+
+
     Meteor.methods({
         updateLeaders: function (winnerName, loserName) {
             var loser = Leaders.findOne({leader: loserName});

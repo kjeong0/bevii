@@ -14,6 +14,15 @@ if (Meteor.isClient) {
         }
     })
 
+    Template.admin.helpers({
+        isAdmin: () => {
+            return Meteor.user().username == "admin";
+        }, 
+        'click #admin': function(event) {
+            Meteor.call('startRound');
+        }
+    });
+
     Template.rps.helpers({
         userSelection: () => {
             return Session.get('userSelection');
@@ -83,16 +92,6 @@ if (Meteor.isClient) {
 
             var thisPlayer = Meteor.user().username;
             var otherPlayer = event.target.value;
-
-            var leaders = Leaders.findOne({
-                $or: [
-                    {leader: thisPlayer},
-                    {followers: { $elemMatch: {thisPlayer}}}
-                ]
-            });
-            if (!leaders){
-                Leaders.insert({leader: thisPlayer, followers: []});
-            }
 
             Matches.insert({
                 playerOne: thisPlayer,
@@ -236,6 +235,13 @@ if (Meteor.isServer) {
                 }.bind(this);
                 getWinner(Meteor.user().username, otherPlayer);
             }
+        },
+        startRound: function () {
+            var users_online = Meteor.users.find({ "status.online": true});
+            users_online.forEach(function(user) {
+                var leaderName = user.leader;
+                Leaders.insert({leader: leaderName, followers: []});
+            });
         }
     });
 }

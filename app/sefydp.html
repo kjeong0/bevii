@@ -19,6 +19,7 @@
     </nav>
 
     <div class="container">
+        {{> admin}}
         {{> userCount}}
         {{#if currentUser}}
             {{> rps}}
@@ -33,6 +34,12 @@
             <h4>{{first_name}}&nbsp;{{last_name}}</h4>
         {{/with}}
     {{/with}}
+</template>
+
+<template name="admin">
+    {{#if isAdmin}}
+        <button id="admin">Start shit up</button>
+    {{/if}}
 </template>
 
 <template name="matches">

@@ -1,8 +1,4 @@
 /* CSS declarations go here */
-.loginbuttons {
-	padding-top: 15px;
-	text-decoration: none;
-}
 
 body {
     padding-top: 70px;
@@ -19,4 +15,21 @@ body {
 
 .btnrps img {
 	max-width: 75%;
+}
+
+.logo {
+	display: inline-block;
+	position: relative;
+    width: 200px;
+	height: 35px;
+	top: -7.5px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url(/images/logo.png);
+}
+
+.user-count-mini {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 }

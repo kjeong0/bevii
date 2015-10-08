@@ -3,16 +3,16 @@
 </head>
 
 <body>
-
-
-
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Bevii&nbsp;&nbsp;&nbsp;<small>{{> userCountMini}}</small></a>
+          <a class="navbar-brand" href="#"><div class="logo"></div></a>
         </div>
-          <ul class="nav navbar-nav navbar-left loginbuttons">
+          <ul class="nav navbar-nav navbar-left">
+            <div class="user-count-mini">{{> userCountMini}}</div>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             {{> loginButtons}}
           </ul>
       </div>
@@ -26,6 +26,14 @@
         {{> followers}}
     </div>
 </body>
+
+<template name="_loginButtonsAdditionalLoggedInDropdownActions">
+    {{#with currentUser}}
+        {{#with profile}}
+            <h4>{{first_name}}&nbsp;{{last_name}}</h4>
+        {{/with}}
+    {{/with}}
+</template>
 
 <template name="matches">
     {{#each matches}}

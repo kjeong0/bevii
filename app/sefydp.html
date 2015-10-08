@@ -7,8 +7,11 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Bevii&nbsp;&nbsp;&nbsp;<small>{{> userCountMini}}</small></a>
+          <a class="navbar-brand" href="#"><div class="logo"></div></a>
         </div>
+          <ul class="nav navbar-nav navbar-left">
+            <div class="user-count-mini">{{> userCountMini}}</div>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             {{> loginButtons}}
           </ul>

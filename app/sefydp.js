@@ -60,43 +60,10 @@ if (Meteor.isClient) {
         }
     });
 
-    function updateLeaders (winnerName, loserName) {
-        var loser = Leaders.find({leader: loserName});
-        Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
-        Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
-        Leaders.remove({leader: loserName});
-    }
-
     Template.rps.events({
         'click .rps': function(event) {
-            // Add a key indicating the user's choice and checks for winner if possible
-            var updateQuery = {$set: {}};
             var choice = event.currentTarget.value;
-            updateQuery.$set[Meteor.user().username + ".choice"] = event.currentTarget.value;
-            Matches.update(this._id, updateQuery);
-
-            var otherPlayer = Meteor.user().username === this.playerOne ? this.playerTwo : this.playerOne;
-            if(this[otherPlayer] !== undefined) {
-                /* Really ugly way to find the winner, refactor this later */
-                var getWinner = function(playerOneName, playerTwoName) {
-                    var playerOneChoice = choice;
-                    var playerTwoChoice = this[playerTwoName].choice;
-                    if ((playerOneChoice === "rock" && playerTwoChoice ==="scissors") ||
-                        (playerOneChoice === "scissors" && playerTwoChoice ==="paper") ||
-                        (playerOneChoice === "paper" && playerTwoChoice ==="rock")) {
-                        Matches.update(this._id, {$set: {winner: playerOneName}});
-                        updateLeaders(playerOneName, playerTwoName);
-                    } else if ((playerTwoChoice === "rock" && playerOneChoice ==="scissors") ||
-                               (playerTwoChoice === "scissors" && playerOneChoice ==="paper") ||
-                               (playerTwoChoice === "paper" && playerOneChoice ==="rock")) {
-                        Matches.update(this._id, {$set: {winner: playerTwoName}});
-                        updateLeaders(playerTwoName, playerOneName);
-                    } else {
-                        Matches.update(this._id, {$set: {winner: "tie"}});
-                    }
-                }.bind(this);
-                getWinner(Meteor.user().username, otherPlayer);
-            }
+            Meteor.call('playerChoose', this._id, choice);
         }
     });
 
@@ -117,14 +84,14 @@ if (Meteor.isClient) {
             var thisPlayer = Meteor.user().username;
             var otherPlayer = event.target.value;
 
-            var leaders = Leaders.find({
+            var leaders = Leaders.findOne({
                 $or: [
                     {leader: thisPlayer},
                     {followers: { $elemMatch: {thisPlayer}}}
                 ]
             });
             if (!leaders){
-                Leaders.insert({leader: thisPlayer, follower: []});
+                Leaders.insert({leader: thisPlayer, followers: []});
             }
 
             Matches.insert({
@@ -184,7 +151,41 @@ if (Meteor.isServer) {
             return Matches.find();
         });
     });
-    Meteor.methods({
 
+    Meteor.methods({
+        updateLeaders: function (winnerName, loserName) {
+            var loser = Leaders.findOne({leader: loserName});
+            Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
+            Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
+            Leaders.remove({leader: loserName});
+        },
+        playerChoose: function(id, choice) {
+            // Add a key indicating the user's choice and checks for winner if possible
+            var match = Matches.findOne({_id: id});
+            var updateQuery = {$set: {}};
+            updateQuery.$set[Meteor.user().username + ".choice"] = choice;
+            Matches.update(id, updateQuery);
+            var otherPlayer = Meteor.user().username === match.playerOne ? match.playerTwo : match.playerOne;
+            if(match[otherPlayer] !== undefined) {
+                var getWinner = function(playerOneName, playerTwoName) {
+                    var playerOneChoice = choice;
+                    var playerTwoChoice = match[playerTwoName].choice;
+                    if ((playerOneChoice === "rock" && playerTwoChoice ==="scissors") ||
+                        (playerOneChoice === "scissors" && playerTwoChoice ==="paper") ||
+                        (playerOneChoice === "paper" && playerTwoChoice ==="rock")) {
+                        Matches.update(id, {$set: {winner: playerOneName}});
+                        Meteor.call('updateLeaders', playerTwoName, playerOneName);
+                    } else if ((playerTwoChoice === "rock" && playerOneChoice ==="scissors") ||
+                               (playerTwoChoice === "scissors" && playerOneChoice ==="paper") ||
+                               (playerTwoChoice === "paper" && playerOneChoice ==="rock")) {
+                        Matches.update(id, {$set: {winner: playerTwoName}});
+                        Meteor.call('updateLeaders', playerTwoName, playerOneName);
+                    } else {
+                        Matches.update(id, {$set: {winner: "tie"}});
+                    }
+                }.bind(this);
+                getWinner(Meteor.user().username, otherPlayer);
+            }
+        }
     });
 }

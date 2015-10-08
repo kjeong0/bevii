@@ -44,11 +44,11 @@
             <div>
                 {{#if makeMove}}
                     <h3>{{playerOne}} vs. {{playerTwo}}</h3>
-                    <div>
-                        <button id="rock" class="btn btn-default rps" value="rock"><img src="/images/Rock-50.png" /></button>
-                        <button id="paper" class="btn btn-default rps" value="paper"><img src="/images/Paper-50.png" /></button>
-                        <button id="scissors" class="btn btn-default rps" value="scissors"><img src="/images/Scissors-50.png" /></button>
-                        <p>Select your move!</p>
+                    <div class="btnsrps">
+                        <h4>Make your move!</h4>
+                        <button id="rock" class="btnrps btn btn-default rps" value="rock"><img src="/images/rock.png" /></button>
+                        <button id="paper" class="btnrps btn btn-default rps" value="paper"><img src="/images/paper.png" /></button>
+                        <button id="scissors" class="btnrps btn btn-default rps" value="scissors"><img src="/images/scissors.png" /></button>
                     </div>
                 {{else}}
                     {{#if waitingForOtherPlayer}}
@@ -95,7 +95,10 @@
     <h2>Followers</h2>
     {{#each leaders}}
         <div>
-            Leader: {{leader}} | Followers: {{followers}}
+            Leader: {{leader}} | Followers: 
+            {{#each followers}}
+                {{this}}, 
+            {{/each}}
         </div>
     {{/each}} 
 </template>

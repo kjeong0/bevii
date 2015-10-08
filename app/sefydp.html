@@ -23,6 +23,7 @@
         {{#if currentUser}}
             {{> rps}}
         {{/if}}
+        {{> followers}}
     </div>
 </body>
 
@@ -83,6 +84,18 @@
             </tbody>
         </table>
     </div>
+</template>
+
+<template name="followers">
+    <h2>Followers</h2>
+    {{#each leaders}}
+        <div>
+            Leader: {{leader}} | Followers: 
+            {{#each followers}}
+                {{this}}, 
+            {{/each}}
+        </div>
+    {{/each}} 
 </template>
 
 <template name="userCount">

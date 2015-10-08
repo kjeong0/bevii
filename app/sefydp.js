@@ -143,7 +143,32 @@ if (Meteor.isClient) {
     });
 
     Accounts.ui.config({
-        passwordSignupFields: "USERNAME_ONLY"
+        passwordSignupFields: "USERNAME_ONLY",
+        extraSignupFields: [{
+            fieldName: 'first_name',
+            fieldLabel: 'First name',
+            inputType: 'text',
+            visible: true,
+            validate: function(value, errorFunction) {
+                if (!value) {
+                    errorFunction("Please enter your first name");
+                    return false;
+                }
+                return true;
+            }
+        }, {
+            fieldName: 'last_name',
+            fieldLabel: 'Last name',
+            inputType: 'text',
+            visible: true,
+            validate: function(value, errorFunction) {
+                if (!value) {
+                    errorFunction("Please enter your last name");
+                    return false;
+                }
+                return true;
+            }
+        }]
     });
 }
 

@@ -194,8 +194,8 @@ if (Meteor.isServer) {
         var availablePlayers = [];
         leaders.forEach(function(leader) {
             var leaderName = leader.leader;
-            if(isPlayerInMatch(leaderName)) {
-                availablePlayers.append(leaderName);
+            if(!isPlayerInMatch(leaderName)) {
+                availablePlayers.push(leaderName);
             }
             if (availablePlayers.length >= 2) {
                 makeMatch(availablePlayers[0], availablePlayers[1]);
@@ -247,6 +247,7 @@ if (Meteor.isServer) {
                 var leaderName = user.username;
                 Leaders.insert({leader: leaderName, followers: []});
             });
+            console.log(Leaders.find().fetch())
         }
     });
 }

@@ -49,7 +49,7 @@ if (Meteor.isClient) {
         matches: () => {
             return Matches.find({
                 $or: [
-                    playerOne: Meteor.user().username},
+                    {playerOne: Meteor.user().username},
                     {playerTwo: Meteor.user().username}
                 ]
             }, {sort: {date: -1}});

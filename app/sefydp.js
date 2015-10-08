@@ -259,6 +259,7 @@ if (Meteor.isServer) {
         },
         killServer: function () {
             Leaders.remove({});
+            Matches.remove({});
         }
     });
 }

@@ -7,3 +7,16 @@
 body {
     padding-top: 70px;
 }
+
+.btnsrps {
+	text-align: center;
+}
+
+.btnrps {
+	max-width: 25%;
+	min-height: 100px;	
+}
+
+.btnrps img {
+	max-width: 75%;
+}

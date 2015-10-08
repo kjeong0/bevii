@@ -33,3 +33,29 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 }
+
+.leader {
+	font-size: 12pt;
+}
+
+.btncolor {
+	width: 100px;
+}
+	#blue {
+		color: blue;
+	}
+	#red {
+		color: red;
+	}
+	#gold {
+		color: gold;
+	}
+	#green {
+		color: green;
+	}
+	#gray {
+		color: gray;
+	}
+	#black {
+		color: black;
+	}

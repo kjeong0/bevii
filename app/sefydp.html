@@ -69,10 +69,6 @@
                 {{/if}}
             </div>
         {{/each}}
-    {{else}}
-        <div>
-            <p>Challenge someone above!</p>
-        </div>
     {{/if}}
 
     <div>
@@ -103,12 +99,20 @@
 </template>
 
 <template name="followers">
-    <h2>Followers</h2>
+    <h2>Leaderboard</h2>
+    <div>
+        <button id="blue" class="btn btn-default btncolor" value="blue">Blue</button>
+        <button id="red" class="btn btn-default btncolor" value="red">Red</button>
+        <button id="gold" class="btn btn-default btncolor" value="gold">Gold</button>
+        <button id="green" class="btn btn-default btncolor" value="green">Green</button>
+        <button id="gray" class="btn btn-default btncolor" value="gray">Gray</button>
+        <button id="black" class="btn btn-default btncolor" value="black">Black</button>
+    </div>
     {{#each leaders}}
         <div>
-            Leader: {{leader}} | Followers: 
+            <span class="leader" style="color:{{findcolor leader}}">{{leader}}</span> Followers: {{score}}
             {{#each followers}}
-                {{this}}, 
+                <span style="color:{{findcolor this}}">{{this}}</span>
             {{/each}}
         </div>
     {{/each}} 
@@ -117,11 +121,8 @@
 <template name="userCount">
     <div>
         <h2>{{usersOnlineCount}} player(s) online</h2>
-        <h2>Challenge someone!</h2>
         {{#each usersOnline}}
-            <div>
-                <button class="btn btn-default user" value="{{username}}">{{username}}</button>
-            </div>
+            {{username}}
         {{/each}}
     </div>
 </template>

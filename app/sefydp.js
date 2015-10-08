@@ -1,18 +1,34 @@
 Matches = new Mongo.Collection("matches");
 Leaders = new Mongo.Collection("leaders");
+Colours = new Mongo.Collection("colours");
 
 if (Meteor.isClient) {
     Meteor.subscribe("userStatus");
     Meteor.subscribe("matches");
     Meteor.subscribe("leaders");
+    Meteor.subscribe("colours");
 
     Session.setDefault('userSelection', null);
 
     Template.followers.helpers({
         leaders: () => {
-            return Leaders.find();
+            return Leaders.find({}, {
+                sort: {score: -1}
+            });
+        },
+        findcolor: (follower) => {
+            var color = Colours.findOne({ name: follower});
+            if (!color) return;
+            return color.color;
         }
     });
+
+    Template.followers.events({
+        'click .btncolor': function(event) {
+            var color = event.currentTarget.value;
+            Meteor.call('setColour', Meteor.user().username, color);
+        }
+    })
 
     Template.admin.helpers({
         isAdmin: () => {
@@ -158,6 +174,9 @@ if (Meteor.isServer) {
         Meteor.publish("matches", () => {
             return Matches.find();
         });
+        Meteor.publish("colours", () => {
+            return Colours.find();
+        });
     });
 
     var makeMatch = (playerOneName, playerTwoName) => {
@@ -193,8 +212,12 @@ if (Meteor.isServer) {
     Meteor.methods({
         updateLeaders: function (winnerName, loserName) {
             var loser = Leaders.findOne({leader: loserName});
-            Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
+            if (loser.followers) {
+                Leaders.update({leader: winnerName}, {$addToSet: {followers: loser.followers}});
+                Leaders.update({leader: winnerName}, {$inc: {score: loser.followers.length}});
+            }
             Leaders.update({leader: winnerName}, {$push: {followers: loser.leader}});
+            Leaders.update({leader: winnerName}, {$inc: {score: 1}});
             Leaders.remove({leader: loserName});
         },
         playerChoose: function(id, choice) {
@@ -229,7 +252,7 @@ if (Meteor.isServer) {
             var users_online = Meteor.users.find({ "status.online": true});
             users_online.forEach(function(user) {
                 var leaderName = user.username;
-                Leaders.insert({leader: leaderName, followers: []});
+                Leaders.insert({leader: leaderName, score: 0});
             });
             var timer = Meteor.setInterval(function() {
                 // check if there is a winner
@@ -261,6 +284,9 @@ if (Meteor.isServer) {
         killServer: function () {
             Leaders.remove({});
             Matches.remove({});
+        },
+        setColour: function (username, color){
+            Colours.upsert({name: username}, {$set: {color: color}});
         }
     });
 }

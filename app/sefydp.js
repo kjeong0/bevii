@@ -25,8 +25,10 @@ if (Meteor.isClient) {
 
     Template.admin.events({
         'click #admin': function(event) {
-            console.log('huh');
             Meteor.call('startRound');
+        },
+        'click #killServer': function(event) {
+            Meteor.call('killServer');
         }
     });
 
@@ -247,7 +249,9 @@ if (Meteor.isServer) {
                 var leaderName = user.username;
                 Leaders.insert({leader: leaderName, followers: []});
             });
-            console.log(Leaders.find().fetch())
+        },
+        killServer: function () {
+            Leaders.remove({});
         }
     });
 }

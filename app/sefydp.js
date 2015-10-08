@@ -16,9 +16,16 @@ if (Meteor.isClient) {
 
     Template.admin.helpers({
         isAdmin: () => {
-            return Meteor.user().username == "admin";
-        }, 
+            if (Meteor.user()) {
+                return Meteor.user().username == "admin";
+            }
+            return false;
+        }
+    });
+
+    Template.admin.events({
         'click #admin': function(event) {
+            console.log('huh');
             Meteor.call('startRound');
         }
     });
@@ -183,9 +190,7 @@ if (Meteor.isServer) {
         }
 
         // Matchmaking
-        console.log('matchmaking?');
         var leaders = Leaders.find();
-        console.log(leaders.fetch());
         var availablePlayers = [];
         leaders.forEach(function(leader) {
             var leaderName = leader.leader;
@@ -239,7 +244,7 @@ if (Meteor.isServer) {
         startRound: function () {
             var users_online = Meteor.users.find({ "status.online": true});
             users_online.forEach(function(user) {
-                var leaderName = user.leader;
+                var leaderName = user.username;
                 Leaders.insert({leader: leaderName, followers: []});
             });
         }

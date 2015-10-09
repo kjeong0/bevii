@@ -235,7 +235,7 @@ if (Meteor.isServer) {
                         (playerOneChoice === "scissors" && playerTwoChoice ==="paper") ||
                         (playerOneChoice === "paper" && playerTwoChoice ==="rock")) {
                         Matches.update(id, {$set: {winner: playerOneName}});
-                        Meteor.call('updateLeaders', playerTwoName, playerOneName);
+                        Meteor.call('updateLeaders', playerOneName, playerTwoName);
                     } else if ((playerTwoChoice === "rock" && playerOneChoice ==="scissors") ||
                                (playerTwoChoice === "scissors" && playerOneChoice ==="paper") ||
                                (playerTwoChoice === "paper" && playerOneChoice ==="rock")) {

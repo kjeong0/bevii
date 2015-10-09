@@ -2,6 +2,8 @@ Matches = new Mongo.Collection("matches");
 Leaders = new Mongo.Collection("leaders");
 Colours = new Mongo.Collection("colours");
 
+MATCHMAKING_LOCK = false;
+
 if (Meteor.isClient) {
     Meteor.subscribe("userStatus");
     Meteor.subscribe("matches");
@@ -255,6 +257,12 @@ if (Meteor.isServer) {
                 Leaders.insert({leader: leaderName, score: 0});
             });
             var timer = Meteor.setInterval(function() {
+                if(MATCHMAKING_LOCK) {
+                    return;
+                }
+                else {
+                    MATCHMAKING_LOCK = true;
+                }
                 // check if there is a winner
                 // leader
                 if (Leaders.find().fetch().length == 1) {
@@ -263,6 +271,7 @@ if (Meteor.isServer) {
 
                     // stop interval
                     clearInterval(timer);
+                    MATCHMAKING_LOCK = false;
                     return;
                 }
 
@@ -279,6 +288,7 @@ if (Meteor.isServer) {
                         availablePlayers = [];
                     }
                 });
+                MATCHMAKING_LOCK = false;
             }, 1000);
         },
         killServer: function () {

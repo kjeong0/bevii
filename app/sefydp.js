@@ -159,6 +159,30 @@ if (Meteor.isClient) {
                 }
                 return true;
             }
+        }, {
+            fieldName: 'country',
+            fieldLabel: 'Country',
+            inputType: 'select',
+            showFieldLabel: true,
+            empty: 'Please select your country of residence',
+            data: [{
+                id: 1,
+                label: 'Canada',
+                value: 'Canada'
+              }, {
+                id: 2,
+                label: 'United States',
+                value: 'United States',
+            }],
+            visible: true,
+            validate: function(value, errorFunction) {
+                if (!value) {
+                    errorFunction("Please select your country of residence");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         }]
     });
 }

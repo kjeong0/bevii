@@ -7,15 +7,22 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><div class="logo"></div></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button> 
+            <a class="navbar-brand" href="#"><div class="logo"></div></a>
         </div>
-          <ul class="nav navbar-nav navbar-left">
-            <div class="user-count-mini">{{> userCountMini}}</div>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {{> loginButtons}}
-          </ul>
-      </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-left hidden-xs">
+                    <div class="user-count-mini">{{> userCountMini}}</div>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {{> loginButtons}}
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <div class="container">
@@ -29,11 +36,15 @@
 </body>
 
 <template name="_loginButtonsAdditionalLoggedInDropdownActions">
-    {{#with currentUser}}
-        {{#with profile}}
-            <h4>{{first_name}}&nbsp;{{last_name}}</h4>
+    <div>
+        {{#with currentUser}}
+            {{#with profile}}
+                <h4 align="center">{{first_name}}&nbsp;{{last_name}}</h4>
+                <img class="profile-picture" src="/images/profile_picture.png"/>
+                <strong>Country:</strong> {{country}}
+            {{/with}}
         {{/with}}
-    {{/with}}
+    </div>
 </template>
 
 <template name="admin">

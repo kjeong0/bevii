@@ -59,3 +59,10 @@ body {
 	#black {
 		color: black;
 	}
+
+.profile-picture {
+	margin: auto;
+	display: block;
+	width: 125px;
+	height: 150px;
+}
